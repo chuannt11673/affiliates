@@ -51,9 +51,9 @@
 		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
 	</Target>
 
-	<Target Name="NSwag" AfterTargets="Build">
+	<!--<Target Name="NSwag" AfterTargets="Build">
 		<Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net50) run nswag.json /variables:Configuration=$(Configuration)" />
-	</Target>
+	</Target>-->
 
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
 		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->

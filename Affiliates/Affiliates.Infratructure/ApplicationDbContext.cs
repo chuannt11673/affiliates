@@ -1,22 +1,30 @@
 ﻿using Affiliates.Infratructure.Entities;
-using Affiliates.Infratructure.Repository;
 using Affiliates.Shared;
-using Microsoft.AspNetCore.Identity;
+using IdentityServer4.EntityFramework.Entities;
+using IdentityServer4.EntityFramework.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
 namespace Affiliates.Infratructure
 {
-	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IDbContext
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IDbContext, IPersistedGrantDbContext
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 		{
 		}
 
 		public DbSet<Partner> Partners { get; set; }
+		public DbSet<PersistedGrant> PersistedGrants { get; set; }
+		public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder builder)
+		{
+			builder.Entity<PersistedGrant>().HasNoKey();
+			builder.Entity<DeviceFlowCodes>().HasNoKey();
+
+			base.OnModelCreating(builder);
+		}
 
 		public async Task CommitAsync()
 		{
@@ -34,23 +42,10 @@ namespace Affiliates.Infratructure
 			Database.Migrate();
 			await Task.CompletedTask;
 		}
-	}
 
-	public static class ApplicationDbContextExtensions
-	{
-		public static IServiceCollection AddInfratructure(this IServiceCollection services, IConfiguration configuration)
+		public Task<int> SaveChangesAsync()
 		{
-			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-			services
-				.AddIdentity<ApplicationUser, IdentityRole>()
-				.AddEntityFrameworkStores<ApplicationDbContext>()
-				.AddDefaultTokenProviders();
-
-			services.AddDatabaseDeveloperPageExceptionFilter();
-			services.AddScoped<IDbContext, ApplicationDbContext>();
-			services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-			return services;
+			throw new System.NotImplementedException();
 		}
 	}
 }

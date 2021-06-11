@@ -61,6 +61,9 @@ namespace Affiliates.WebApp
 				.UseOpenApi()
 				.UseSwaggerUi3();
 
+			app.UseIdentityServer();
+			app.UseAuthorization();
+
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
