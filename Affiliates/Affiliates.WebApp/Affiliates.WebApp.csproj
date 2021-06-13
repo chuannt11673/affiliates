@@ -28,16 +28,16 @@
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
 		<Compile Remove="ClientApp-old\**" />
+		<Compile Remove="ClientApp\src\app\apis\**" />
 		<Content Remove="$(SpaRoot)**" />
 		<Content Remove="ClientApp-old\**" />
+		<Content Remove="ClientApp\src\app\apis\**" />
 		<EmbeddedResource Remove="ClientApp-old\**" />
+		<EmbeddedResource Remove="ClientApp\src\app\apis\**" />
 		<None Remove="$(SpaRoot)**" />
 		<None Remove="ClientApp-old\**" />
+		<None Remove="ClientApp\src\app\apis\**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="ClientApp\src\app\apis\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -55,9 +55,9 @@
 		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
 	</Target>
 
-	<!--<Target Name="NSwag" AfterTargets="Build">
+	<Target Name="NSwag" AfterTargets="Build">
 		<Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net50) run nswag.json /variables:Configuration=$(Configuration)" />
-	</Target>-->
+	</Target>
 
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
 		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
