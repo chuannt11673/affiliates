@@ -21,7 +21,15 @@
           </li>
         </ul>
         <div class="d-flex">
-            <button class="btn btn-outline-success">Sign In</button>
+          <div *ngIf="(user$ | async) as user">
+            <ng-container *ngIf="user.isLoggedIn; else elseTemplate">
+              <a class="btn btn-outline-success me-2" (click)="signout()">SignOut</a>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <a class="btn btn-outline-success me-2" [routerLink]="['/signin']" routerLinkActive="router-link-active" >SignIn</a>
+              <a class="btn btn-outline-primary" [routerLink]="['/signup']" routerLinkActive="router-link-active" >SignUp</a>
+            </ng-template>
+          </div>
         </div>
       </div>
     </div>

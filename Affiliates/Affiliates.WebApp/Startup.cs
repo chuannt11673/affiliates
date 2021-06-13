@@ -1,3 +1,4 @@
+using Affiliates.Application;
 using Affiliates.Infratructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +22,19 @@ namespace Affiliates.WebApp
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddApplication();
 			services.AddInfratructure(Configuration);
+
+			services.AddCors(options =>
+			{
+				options.AddPolicy("allowsAll", opts =>
+				{
+					opts.WithOrigins("https://localhost:5001")
+					.AllowAnyHeader()
+					.AllowAnyMethod()
+					.AllowCredentials();
+				});
+			});
 
 			services.AddControllersWithViews();
 			// In production, the Angular files will be served from this directory
@@ -48,21 +61,26 @@ namespace Affiliates.WebApp
 			}
 
 			app.UseHttpsRedirection();
+			
 			app.UseStaticFiles();
+
 			if (!env.IsDevelopment())
 			{
 				app.UseSpaStaticFiles();
 			}
 
+			app.UseCors("allowsAll");
+
+			app.UseIdentityServer();
+
 			app.UseRouting();
+
+			app.UseAuthorization();
 
 			// Nwag
 			app
 				.UseOpenApi()
 				.UseSwaggerUi3();
-
-			app.UseIdentityServer();
-			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{

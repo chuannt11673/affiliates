@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Linq;
+using static IdentityModel.OidcConstants;
 
 namespace Affiliates.Infratructure
 {
@@ -15,12 +18,12 @@ namespace Affiliates.Infratructure
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddDefaultIdentity<ApplicationUser>()
-				.AddEntityFrameworkStores<ApplicationDbContext>()
-				.AddDefaultTokenProviders();
+			services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 			services.AddIdentityServer()
-				.AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+				.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options => {
+					options.Clients.First(x => x.ClientId == "spa").AllowedGrantTypes = new List<string> { GrantTypes.Password };
+				});
 
 			services.AddAuthentication()
 				.AddIdentityServerJwt();

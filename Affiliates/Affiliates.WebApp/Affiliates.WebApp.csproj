@@ -41,6 +41,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Affiliates.Application\Affiliates.Application.csproj" />
 	  <ProjectReference Include="..\Affiliates.Infratructure\Affiliates.Infratructure.csproj" />
 	  <ProjectReference Include="..\Affiliates.Shared\Affiliates.Shared.csproj" />
 	</ItemGroup>
