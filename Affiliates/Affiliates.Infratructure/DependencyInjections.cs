@@ -11,25 +11,32 @@ using static IdentityModel.OidcConstants;
 
 namespace Affiliates.Infratructure
 {
-	public static class ApplicationDbContextExtensions
+	public static class DependencyInjections
 	{
 		public static IServiceCollection AddInfratructure(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+			services.AddDefaultIdentity<ApplicationUser>()
+				.AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 			services.AddIdentityServer()
 				.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options => {
-					options.Clients.First(x => x.ClientId == "spa").AllowedGrantTypes = new List<string> { GrantTypes.Password };
+					var client = options.Clients.First(x => x.ClientId == "spa");
+					client.AllowedGrantTypes = new List<string> { GrantTypes.Password };
+					client.AllowOfflineAccess = true;
+					client.RefreshTokenUsage = IdentityServer4.Models.TokenUsage.OneTimeOnly;
+					client.AccessTokenLifetime = 60;
 				});
 
 			services.AddAuthentication()
-				.AddIdentityServerJwt();
+			.AddIdentityServerJwt();
 
 			services.AddScoped<IDbContext, ApplicationDbContext>();
 			services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+			services.AddHttpContextAccessor();
 
 			return services;
 		}

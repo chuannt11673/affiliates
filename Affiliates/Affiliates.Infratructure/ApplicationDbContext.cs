@@ -1,28 +1,22 @@
-﻿using Affiliates.Infratructure.Entities;
-using Affiliates.Shared;
-using IdentityServer4.EntityFramework.Entities;
-using IdentityServer4.EntityFramework.Interfaces;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Affiliates.Shared;
+using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace Affiliates.Infratructure
 {
-	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IDbContext, IPersistedGrantDbContext
+	public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IDbContext
 	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+		public ApplicationDbContext(
+			DbContextOptions options,
+			IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
 		{
 		}
 
-		public DbSet<Partner> Partners { get; set; }
-		public DbSet<PersistedGrant> PersistedGrants { get; set; }
-		public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
-
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			builder.Entity<PersistedGrant>().HasNoKey();
-			builder.Entity<DeviceFlowCodes>().HasNoKey();
-
 			base.OnModelCreating(builder);
 		}
 
@@ -43,9 +37,9 @@ namespace Affiliates.Infratructure
 			await Task.CompletedTask;
 		}
 
-		public Task<int> SaveChangesAsync()
+		public async Task<int> SaveChangesAsync()
 		{
-			throw new System.NotImplementedException();
+			return await SaveChangesAsync();
 		}
 	}
 }

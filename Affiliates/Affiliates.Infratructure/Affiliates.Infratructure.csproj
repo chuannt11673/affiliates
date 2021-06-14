@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Affiliates.Shared\Affiliates.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\" />
+  </ItemGroup>
+
 </Project>

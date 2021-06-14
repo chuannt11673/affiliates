@@ -1,42 +1,52 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private userSubject = new BehaviorSubject<{ isLoggedIn: boolean, username?: string }>({
-        isLoggedIn: false,
-        username: null
-    });
+    private userSubject = new BehaviorSubject<{
+        name: string;
+        preferred_username: string;
+        sub: string;
+        isAuthenticated: boolean;
+    }>(null);
     user$ = this.userSubject.asObservable();
 
-    constructor(private httpClient: HttpClient, 
+    constructor(
+        private httpClient: HttpClient, 
         @Inject('BASE_URL') private baseUrl: string) {
-        this.init();
     }
 
-    init() {
-        const access_token = localStorage.getItem('access_token');
-        if (access_token) {
+    private tokenEndpoint = this.baseUrl + 'connect/token';
+    private userInfoEndpoint = this.baseUrl + 'connect/userinfo';
+
+    getUser() {
+        const access_token = sessionStorage.getItem('access_token');
+        if (!access_token)
+            return;
+
+        this.httpClient.get(this.userInfoEndpoint)
+        .pipe(take(1))
+        .subscribe((res: any) => {
             this.userSubject.next({
-                isLoggedIn: true
+                ...res,
+                isAuthenticated: !!res.sub
             });
-        }
+        });
     }
 
     signin(username: string, password: string) {
-        const tokenEndpoint = this.baseUrl + 'connect/token';
         const formData = new URLSearchParams();
         formData.set('client_id', 'spa');
         formData.set('grant_type', 'password');
-        formData.set('scope', 'openid profile Affiliates.WebAppAPI');
+        formData.set('scope', 'openid profile offline_access Affiliates.WebAppAPI');
         formData.set('username', username);
         formData.set('password', password);
 
-        return this.httpClient.post(tokenEndpoint, formData.toString(), {
+        return this.httpClient.post(this.tokenEndpoint, formData.toString(), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded;'
             }
@@ -44,21 +54,45 @@ export class AuthService {
         .pipe(
             tap(
                 (res: any) => {
-                    localStorage.setItem('access_token', res.access_token);
-                    this.userSubject.next({
-                        isLoggedIn: true,
-                        username: username
-                    });
+                    this.setToken(res);
                 }
             )
         );
     }
 
     signout() {
-        localStorage.clear();
-        this.userSubject.next({
-            isLoggedIn: false,
-            username: null
-        });
+        sessionStorage.clear();
+        this.userSubject.next(null);
+    }
+
+    refreshToken() {
+        const refreshToken = sessionStorage.getItem('refresh_token');
+        if (!refreshToken)
+            return;
+
+        const formData = new URLSearchParams();
+        formData.set('client_id', 'spa');
+        formData.set('grant_type', 'refresh_token');
+        formData.set('refresh_token', refreshToken);
+
+        return this.httpClient.post(this.tokenEndpoint, formData.toString(), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;'
+            }
+        })
+        .pipe(
+            tap(
+                (res: any) => {
+                    this.setToken(res);
+                }
+            )
+        );
+    }
+
+    private setToken(res: any) {
+        sessionStorage.setItem('access_token', res.access_token);
+        sessionStorage.setItem('refresh_token', res.refresh_token);
+        sessionStorage.setItem('expires_in', res.expires_in);
+        this.getUser();
     }
 }

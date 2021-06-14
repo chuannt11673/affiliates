@@ -14,5 +14,12 @@
 
 	public class UserModel : EditUserModel
 	{
+		public bool IsAuthenticated
+		{
+			get
+			{
+				return !string.IsNullOrEmpty(Id);
+			}
+		}
 	}
 }
