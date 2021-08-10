@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Affiliates.Shared\Affiliates.Shared.csproj" />
+    <ProjectReference Include="..\Dekopons.Shared\Dekopons.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

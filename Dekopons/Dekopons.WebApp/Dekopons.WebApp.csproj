@@ -41,9 +41,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Affiliates.Application\Affiliates.Application.csproj" />
-	  <ProjectReference Include="..\Affiliates.Infratructure\Affiliates.Infratructure.csproj" />
-	  <ProjectReference Include="..\Affiliates.Shared\Affiliates.Shared.csproj" />
+	  <ProjectReference Include="..\Dekopons.Application\Dekopons.Application.csproj" />
+	  <ProjectReference Include="..\Dekopons.Infratructure\Dekopons.Infratructure.csproj" />
+	  <ProjectReference Include="..\Dekopons.Shared\Dekopons.Shared.csproj" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
@@ -54,10 +54,6 @@
 		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
 		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
 		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-	</Target>
-
-	<Target Name="NSwag" AfterTargets="Build">
-		<Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net50) run nswag.json /variables:Configuration=$(Configuration)" />
 	</Target>
 
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
@@ -77,5 +73,4 @@
 			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
-
 </Project>

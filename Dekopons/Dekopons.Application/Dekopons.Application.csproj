@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Affiliates.Infratructure\Affiliates.Infratructure.csproj" />
-    <ProjectReference Include="..\Affiliates.Shared\Affiliates.Shared.csproj" />
+    <ProjectReference Include="..\Dekopons.Infratructure\Dekopons.Infratructure.csproj" />
+    <ProjectReference Include="..\Dekopons.Shared\Dekopons.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
