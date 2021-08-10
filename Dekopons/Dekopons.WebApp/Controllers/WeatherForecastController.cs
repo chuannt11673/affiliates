@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Affiliates.WebApp.Controllers
 {
@@ -24,6 +24,8 @@ namespace Affiliates.WebApp.Controllers
 		}
 
 		[HttpGet]
+		[ProducesResponseType(statusCode: StatusCodes.Status200OK, type: typeof(IEnumerable<WeatherForecast>))]
+		[ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
 		public IEnumerable<WeatherForecast> Get()
 		{
 			var rng = new Random();

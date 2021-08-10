@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IdentityClient } from '../api';
+import { IdentityClient } from '../_shared/api/api';
 
 @Component({
   selector: 'app-signup',

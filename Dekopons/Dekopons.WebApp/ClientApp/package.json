@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build-api": "nswag run ./src/app/_shared/api/nswag.json /runtime:Net50"
   },
   "private": true,
   "dependencies": {

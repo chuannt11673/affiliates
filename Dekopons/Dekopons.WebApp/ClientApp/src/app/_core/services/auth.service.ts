@@ -17,7 +17,7 @@ export class AuthService {
 
     constructor(
         private httpClient: HttpClient, 
-        @Inject('BASE_URL') private baseUrl: string) {
+        @Inject('API_BASE_URL') private baseUrl: string) {
     }
 
     private tokenEndpoint = this.baseUrl + 'connect/token';

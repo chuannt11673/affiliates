@@ -1,26 +1,31 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/Dekopons.WebApp",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:58630",
       "sslPort": 44388
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "WebApp": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\Admin\\source\\repos\\chuannt11673\\dekopon\\Dekopons\\Dekopons.WebApp",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_Environment": "Development"
       }
     },
-    "Affiliates.WebApp": {
-      "commandName": "Project",
+    "IIS": {
+      "commandName": "IISExpress",
+      "workingDirectory": "C:\\Users\\Admin\\source\\repos\\chuannt11673\\dekopon\\Dekopons\\Dekopons.WebApp",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_Environment": "Development"
       }
     }
   }

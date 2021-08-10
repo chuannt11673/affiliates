@@ -2,8 +2,6 @@ using Affiliates.Application;
 using Affiliates.Infratructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,10 +27,10 @@ namespace Affiliates.WebApp
 			{
 				options.AddPolicy("allowsAll", opts =>
 				{
-					opts.WithOrigins("https://localhost:5001")
+					opts
+					.AllowAnyOrigin()
 					.AllowAnyHeader()
-					.AllowAnyMethod()
-					.AllowCredentials();
+					.AllowAnyMethod();
 				});
 			});
 
@@ -61,7 +59,7 @@ namespace Affiliates.WebApp
 			}
 
 			app.UseHttpsRedirection();
-			
+
 			app.UseStaticFiles();
 
 			if (!env.IsDevelopment())
@@ -84,9 +82,7 @@ namespace Affiliates.WebApp
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllerRoute(
-					name: "default",
-					pattern: "{controller}/{action=Index}/{id?}");
+				endpoints.MapControllers();
 			});
 
 			app.UseSpa(spa =>
@@ -98,7 +94,8 @@ namespace Affiliates.WebApp
 
 				if (env.IsDevelopment())
 				{
-					spa.UseAngularCliServer(npmScript: "start");
+					//spa.UseAngularCliServer(npmScript: "start");
+					spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
 				}
 			});
 		}

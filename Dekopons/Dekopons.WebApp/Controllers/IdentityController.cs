@@ -1,6 +1,7 @@
 ﻿using Affiliates.Application.Services;
 using Affiliates.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -18,6 +19,8 @@ namespace Affiliates.WebApp.Controllers
 		}
 
 		[HttpPost, Route("users")]
+		[ProducesResponseType(statusCode: StatusCodes.Status200OK, type: typeof(UserModel))]
+		[ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
 		public async Task<UserModel> Create([FromBody] CreateUserModel model)
 		{
 			var result = await _userService.CreateAsync(model);
@@ -25,6 +28,8 @@ namespace Affiliates.WebApp.Controllers
 		}
 
 		[Authorize, HttpGet, Route("users/current")]
+		[ProducesResponseType(statusCode: StatusCodes.Status200OK, type: typeof(UserModel))]
+		[ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
 		public async Task<UserModel> GetCurrentUser()
 		{
 			var result = await _userService.GetUserInfoAsync();

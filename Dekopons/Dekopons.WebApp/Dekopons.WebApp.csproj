@@ -42,7 +42,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Dekopons.Application\Dekopons.Application.csproj" />
-	  <ProjectReference Include="..\Dekopons.Infratructure\Dekopons.Infratructure.csproj" />
 	  <ProjectReference Include="..\Dekopons.Shared\Dekopons.Shared.csproj" />
 	</ItemGroup>
 
